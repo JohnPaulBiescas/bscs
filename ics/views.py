@@ -9,8 +9,6 @@ from joblib import load
 from .models import Student
 
 # IMPORT MODELS HERE
-#model1 = pickle.load(open("modelIT.pkl", "rb"))
-#model2 = pickle.load(open("modelCS.pkl", "rb"))
 model1 = pickle.load(open("CS1stYear.pkl", "rb"))
 model2 = pickle.load(open("CS2ndYear_1st.pkl", "rb"))
 model3 = pickle.load(open("CS2ndYear_2nd.pkl", "rb"))
@@ -23,7 +21,6 @@ model9 = pickle.load(open("2ndYear_2nd_IT.pkl", "rb"))
 model10 = pickle.load(open("3rdYear_1st_IT.pkl", "rb"))
 model11 = pickle.load(open("3rdYear_2nd_IT.pkl", "rb"))
 model12 = pickle.load(open("4thYear_1st_IT.pkl", "rb"))
-
 # /IMPORT MODELS HERE
 
 def index(request):
