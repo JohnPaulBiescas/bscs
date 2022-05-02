@@ -66,20 +66,150 @@ def IT3_2page(request):
     return render(request, "IT3_2page.html")
 # /BSIT
 
-def delete(request, student_id):
+#DELETE
+def deleteCS12(request, student_id):
    stud = Student.objects.get(pk=student_id)
    stud.delete()
-   return redirect('table')
+   return redirect('tableCS12')
+def deleteCS21(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableCS21')
+def deleteCS22(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableCS22')
+def deleteCS31(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableCS31')
+def deleteCS32(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableCS32')
+def deleteCS41(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableCS41')
 
+def deleteIT12(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT12')
+def deleteIT21(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT21')
+def deleteIT22(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT22')
+def deleteIT31(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT31')
+def deleteIT32(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT32')
+def deleteIT41(request, student_id):
+   stud = Student.objects.get(pk=student_id)
+   stud.delete()
+   return redirect('tableIT41')
 
 #datatable
 
-def table(request):
-    student1 = Student.objects.all()
+#BSCS DATATABLES
+def tableCS12(request):
+    student1 = Student.objects.filter(course = 'BSCS')
+    student1 = Student.objects.exclude(resultCS11__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableCS12.html", stu)
+
+def tableCS21(request):
+    student1 = Student.objects.filter(course = 'BSCS')
+    student1 = Student.objects.exclude(resultCS12__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableCS21.html", stu)
+
+def tableCS22(request):
+    student1 = Student.objects.filter(course = 'BSCS')
+    student1 = Student.objects.exclude(resultCS21__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableCS22.html", stu)
+
+def tableCS31(request):
+    student1 = Student.objects.filter(course = 'BSCS') 
+    student1 = Student.objects.exclude(resultCS22__isnull=True)
     
     stu = { "student_number": student1 }
     
-    return render(request, "table.html", stu)
+    return render(request, "tableCS31.html", stu)
+
+def tableCS32(request):
+    student1 = Student.objects.filter(course = 'BSCS') 
+    student1 = Student.objects.exclude(resultCS31__isnull=True)
+    
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableCS32.html", stu)
+
+def tableCS41(request):
+    student1 = Student.objects.filter(course = 'BSCS') 
+    student1 = Student.objects.exclude(resultCS32__isnull=True)
+    
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableCS41.html", stu)
+
+def tableIT12(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT11__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT12.html", stu)
+def tableIT21(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT12__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT21.html", stu)
+def tableIT22(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT21__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT22.html", stu)
+def tableIT31(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT22__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT31.html", stu)
+def tableIT32(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT31__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT32.html", stu)
+def tableIT41(request):
+    student1 = Student.objects.filter(course = 'BSIT')
+    student1 = Student.objects.exclude(resultIT32__isnull=True)
+         
+    stu = { "student_number": student1 }
+    
+    return render(request, "tableIT41.html", stu)
 
 #generate predictions
 

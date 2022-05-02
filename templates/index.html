@@ -14,17 +14,29 @@
     <link rel="stylesheet" href=" {% static 'css/Features-Boxed.css' %} ">
     <link rel="stylesheet" href=" {% static 'css/Highlight-Clean.css' %} ">
     <link rel="stylesheet" href=" {% static 'css/untitled.css' %} ">
+    <style>li{cursor: pointer;}</style>
 </head>
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
         <div class="container"><img class="img-fluid" src=" {% static 'img/ICS.png' %} " loading="auto" style="width: 51px;margin-right: 10px;"><a class="navbar-brand" href=" {% url 'index' %} "><strong>ICS Retention Prediction</strong><br></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="font-size: 16PX;">RETENTION ANALYSIS</a></li>
-                </ul>
-                <ul class="navbar-nav" style="margin-left: 40px;">
-                    <li class="nav-item"><a class="nav-link"  style="font-size: 16PX;" href="{% url 'table' %}">STUDENT RECORDS</a></li>
+                <ul class="navbar-nav " style="margin-left: 580px;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}" style="font-size: 16PX;">DASHBOARD<br></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="font-size: 16PX;">PREDICT</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" style="font-size: 16PX;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            RECORDS
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item"  href="{% url 'tableCS12' %}">BSCS</a></li>
+                          <li><a class="dropdown-item" href="{% url 'tableIT12' %}">BSIT</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
