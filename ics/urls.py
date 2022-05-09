@@ -1,7 +1,7 @@
 from django.urls import include, path
 from django.shortcuts import redirect
 
-from .views import index,CSpage,ITpage,CS1_2page,CS2page,CS2_2page,CS3page,IT1_2page,IT2page,IT2_2page,IT3page,CS3_2page,IT3_2page,resultCS1_1,resultCS1_2,resultCS2_1,resultCS2_2,resultCS3_1,resultCS3_2,resultIT1_1,resultIT1_2,resultIT2_1,resultIT2_2,resultIT3_1,resultIT3_2,tableCS12,deleteCS12,tableCS21,deleteCS21,deleteCS22,tableCS22,tableCS31,deleteCS31,tableCS32,deleteCS32,tableCS41,deleteCS41,tableIT12,deleteIT12,tableIT21,deleteIT21,tableIT22,deleteIT22,tableIT31,deleteIT31,tableIT32,deleteIT32,deleteIT41,tableIT41
+from .views import index,CSpage,ITpage,CS1_2page,CS2page,CS2_2page,CS3page,IT1_2page,IT2page,IT2_2page,IT3page,CS3_2page,IT3_2page,resultCS1_1,resultCS1_2,resultCS2_1,resultCS2_2,resultCS3_1,resultCS3_2,resultIT1_1,resultIT1_2,resultIT2_1,resultIT2_2,resultIT3_1,resultIT3_2,tableCS12,deleteCS12,tableCS21,deleteCS21,deleteCS22,tableCS22,tableCS31,deleteCS31,tableCS32,deleteCS32,tableCS41,deleteCS41,tableIT12,deleteIT12,tableIT21,deleteIT21,tableIT22,deleteIT22,tableIT31,deleteIT31,tableIT32,deleteIT32,deleteIT41,tableIT41,dashboard
 
 
 from . import views
@@ -60,4 +60,6 @@ urlpatterns = [
     path('deleteIT31/<student_id>', deleteIT31, name = "deleteIT31"),
     path('deleteIT32/<student_id>', deleteIT32, name = "deleteIT32"),
     path('deleteIT41/<student_id>', deleteIT41, name = "deleteIT41"),
+    
+    path('dashboard', dashboard, name = "dashboard"),
 ]

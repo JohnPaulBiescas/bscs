@@ -1,3 +1,4 @@
+from gzip import READ
 from turtle import end_fill
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -6,7 +7,8 @@ from django.shortcuts import redirect
 import pandas as pd
 import pickle
 from joblib import load
-from .models import Student
+from .models import Bscs1_1, Bscs1_2, Bscs2_1, Bscs2_2, Bscs3_1, Bscs3_2, Bsit1_1, Bsit1_2, Bsit2_1, Bsit2_2, Bsit3_1, Bsit3_2,Course,Totalcs,Totalit
+from django.db.models import Count
 
 # IMPORT MODELS HERE
 model1 = pickle.load(open("CS1stYear.pkl", "rb"))
@@ -66,172 +68,354 @@ def IT3_2page(request):
     return render(request, "IT3_2page.html")
 # /BSIT
 
-#DELETE
+#+++++++++++++++++++++++++++++++++++DASHBOARD++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def dashboard(request):
+    cs_count = Totalcs.objects.all().count()
+    it_count = Totalit.objects.all().count()
+    total_count = Course.objects.all().count()
+    
+    retention_CountCS11 = Bscs1_1.objects.filter(resultCS11 = '1').count()
+    retention_CountCS12 = Bscs1_2.objects.filter(resultCS12 = '1').count()
+    retention_CountCS21 = Bscs2_1.objects.filter(resultCS21 = '1').count()
+    retention_CountCS22 = Bscs2_2.objects.filter(resultCS22 = '1').count()
+    retention_CountCS31 = Bscs3_1.objects.filter(resultCS31 = '1').count()
+    retention_CountCS32 = Bscs3_2.objects.filter(resultCS32 = '1').count()
+    
+    retention_CountIT11 = Bsit1_1.objects.filter(resultIT11 = '1').count()
+    retention_CountIT12 = Bsit1_2.objects.filter(resultIT12 = '1').count()
+    retention_CountIT21 = Bsit2_1.objects.filter(resultIT21 = '1').count()
+    retention_CountIT22 = Bsit2_2.objects.filter(resultIT22 = '1').count()
+    retention_CountIT31 = Bsit3_1.objects.filter(resultIT31 = '1').count()
+    retention_CountIT32 = Bsit3_2.objects.filter(resultIT32 = '1').count()
+    
+    cs11_count = Bscs1_1.objects.all().count()
+    cs12_count = Bscs1_2.objects.all().count()
+    cs21_count = Bscs2_1.objects.all().count()
+    cs22_count = Bscs2_2.objects.all().count()
+    cs31_count = Bscs3_1.objects.all().count()
+    cs32_count = Bscs3_2.objects.all().count()
+    
+    it11_count = Bsit1_1.objects.all().count()
+    it12_count = Bsit1_2.objects.all().count()
+    it21_count = Bsit2_1.objects.all().count()
+    it22_count = Bsit2_2.objects.all().count()
+    it31_count = Bsit3_1.objects.all().count()
+    it32_count = Bsit3_2.objects.all().count()
+    
+    student_count = {
+        'cs11_count':cs11_count,
+        'cs12_count':cs12_count,
+        'cs21_count':cs21_count,
+        'cs22_count':cs22_count,
+        'cs31_count':cs31_count,
+        'cs32_count':cs32_count,
+        
+        'it11_count':it11_count,
+        'it12_count':it12_count,
+        'it21_count':it21_count,
+        'it22_count':it22_count,
+        'it31_count':it31_count,
+        'it32_count':it32_count,
+        
+        'cs_count':cs_count,
+        'it_count':it_count,
+        'total_count':total_count,
+        
+        'retention_CountCS11': retention_CountCS11,
+        'retention_CountCS12': retention_CountCS12,
+        'retention_CountCS21': retention_CountCS21,
+        'retention_CountCS22': retention_CountCS22,
+        'retention_CountCS31': retention_CountCS31,
+        'retention_CountCS32': retention_CountCS32,
+        
+        'retention_CountIT11': retention_CountIT11,
+        'retention_CountIT12': retention_CountIT12,
+        'retention_CountIT21': retention_CountIT21,
+        'retention_CountIT22': retention_CountIT22,
+        'retention_CountIT31': retention_CountIT31,
+        'retention_CountIT32': retention_CountIT32,
+    }
+    
+    return render(request, "dashboard.html", student_count)
+
+#+++++++++++++++++++++++++++++++++++DELETE++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#DELETE CS
 def deleteCS12(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs1_1.objects.get(pk=student_id)
    stud.delete()
+   
+   #temporary delete method (delete all>reset data)
+   retention = Retention_cs1.objects.all()
+   retention.delete()
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS12')
+
 def deleteCS21(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs1_2.objects.get(pk=student_id)
    stud.delete()
+   
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS21')
+
 def deleteCS22(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs2_1.objects.get(pk=student_id)
    stud.delete()
+   
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS22')
+
 def deleteCS31(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs2_2.objects.get(pk=student_id)
    stud.delete()
+   
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS31')
+
 def deleteCS32(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs3_1.objects.get(pk=student_id)
    stud.delete()
+   
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS32')
+
 def deleteCS41(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bscs3_2.objects.get(pk=student_id)
    stud.delete()
+   
+   csCount = Totalcs.objects.order_by('id').first()
+   if csCount:
+       csCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableCS41')
 
+#DELETE IT
 def deleteIT12(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit1_1.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+       
    return redirect('tableIT12')
+
 def deleteIT21(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit1_2.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableIT21')
+
 def deleteIT22(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit2_1.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableIT22')
+
 def deleteIT31(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit2_2.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableIT31')
+
 def deleteIT32(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit3_1.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableIT32')
+
 def deleteIT41(request, student_id):
-   stud = Student.objects.get(pk=student_id)
+   stud = Bsit3_2.objects.get(pk=student_id)
    stud.delete()
+   
+   itCount = Totalit.objects.order_by('id').first()
+   if itCount:
+       itCount.delete()
+   totalCount = Course.objects.order_by('id').first()
+   if totalCount:
+       totalCount.delete()
+   
    return redirect('tableIT41')
 
-#datatable
+#+++++++++++++++++++++++++++++++++++datatable+++++++++++++++++++++++++++++++++++
 
 #BSCS DATATABLES
 def tableCS12(request):
-    student1 = Student.objects.filter(course = 'BSCS')
-    student1 = Student.objects.exclude(resultCS11__isnull=True)
+    student1 = Bscs1_1.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableCS12.html", stu)
 
 def tableCS21(request):
-    student1 = Student.objects.filter(course = 'BSCS')
-    student1 = Student.objects.exclude(resultCS12__isnull=True)
+    student1 = Bscs1_2.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableCS21.html", stu)
 
 def tableCS22(request):
-    student1 = Student.objects.filter(course = 'BSCS')
-    student1 = Student.objects.exclude(resultCS21__isnull=True)
+    student1 = Bscs2_1.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableCS22.html", stu)
 
 def tableCS31(request):
-    student1 = Student.objects.filter(course = 'BSCS') 
-    student1 = Student.objects.exclude(resultCS22__isnull=True)
+    student1 = Bscs2_2.objects.all()
     
     stu = { "student_number": student1 }
     
     return render(request, "tableCS31.html", stu)
 
 def tableCS32(request):
-    student1 = Student.objects.filter(course = 'BSCS') 
-    student1 = Student.objects.exclude(resultCS31__isnull=True)
+    student1 = Bscs3_1.objects.all()
     
     stu = { "student_number": student1 }
     
     return render(request, "tableCS32.html", stu)
 
 def tableCS41(request):
-    student1 = Student.objects.filter(course = 'BSCS') 
-    student1 = Student.objects.exclude(resultCS32__isnull=True)
+    student1 = Bscs3_2.objects.all()
     
     stu = { "student_number": student1 }
     
     return render(request, "tableCS41.html", stu)
 
+#BSIT DATATABLES
 def tableIT12(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT11__isnull=True)
+    student1 = Bsit1_1.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT12.html", stu)
+
 def tableIT21(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT12__isnull=True)
+    student1 = Bsit1_2.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT21.html", stu)
+
 def tableIT22(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT21__isnull=True)
+    student1 = Bsit2_1.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT22.html", stu)
+
 def tableIT31(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT22__isnull=True)
+    student1 = Bsit2_2.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT31.html", stu)
+
 def tableIT32(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT31__isnull=True)
+    student1 = Bsit3_1.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT32.html", stu)
+
 def tableIT41(request):
-    student1 = Student.objects.filter(course = 'BSIT')
-    student1 = Student.objects.exclude(resultIT32__isnull=True)
+    student1 = Bsit3_2.objects.all()
          
     stu = { "student_number": student1 }
     
     return render(request, "tableIT41.html", stu)
 
-#generate predictions
+#++++++++++++++++++++++++++++ADD DATA & generate predictions+++++++++++++++++++++++++++++
 
 #CS_1.1
 def resultCS1_1(request):
-    if request.method == 'POST':
-        CC100 = request.POST['CC100']
-        CC101 = request.POST['CC101']
-        
-        prediction = model1.predict([[CC100,CC101]])
-        studentID = request.POST['studentID']
-        
-        student1 = Student()
-        student1.idNumber = studentID
-        student1.resultCS11 = prediction
-        student1.CC100=CC100
-        student1.CC101=CC101
-        student1.course = 'BSCS'
-        
-        student1.save()
-
-    return render(request, "rCS1_1.html" , {'student1': student1})
+    CC100 = request.POST['CC100']
+    CC101 = request.POST['CC101']
+            
+    prediction = model1.predict([[CC100,CC101]])
+    studentID = request.POST['studentID']
+    
+    #fetch to Class Bscs1_1
+    student1 = Bscs1_1()
+    student1.idNumber = studentID
+    student1.resultCS11 = prediction
+    student1.CC100=CC100
+    student1.CC101=CC101
+    student1.save()
+    
+    #fetch to class Cs > count
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
+    
+    return render(request, "rCS1_1.html" , {'student1': student1} )
 
 #CS_1.2
 def resultCS1_2(request):
@@ -242,15 +426,20 @@ def resultCS1_2(request):
     prediction = model2.predict([[CC102,CS111,MATH103]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bscs1_2()
     student1.idNumber = studentID
     student1.resultCS12 = prediction
     student1.CC102=CC102
     student1.CS111=CS111
     student1.MATH103=MATH103
-    student1.course = 'BSCS'
-        
     student1.save()
+    
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
     
     return render(request, "rCS1_2.html" , {'student1': student1})
 
@@ -266,7 +455,7 @@ def resultCS2_1(request):
     prediction = model3.predict([[CC103,CS121,CS123,CS125,CS127,MATH104]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bscs2_1()
     student1.idNumber = studentID
     student1.resultCS21 = prediction
     student1.CC103=CC103
@@ -275,9 +464,14 @@ def resultCS2_1(request):
     student1.CS125=CS125
     student1.CS127=CS127
     student1.MATH104=MATH104
-    student1.course = 'BSCS'
-    
     student1.save()
+    
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
     
     return render(request, "rCS2_1.html" , {'student1': student1})
 
@@ -292,7 +486,7 @@ def resultCS2_2(request):
     prediction = model4.predict([[CC104,CS120,CS122,CS124,CS126]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bscs2_2()
     student1.idNumber = studentID
     student1.resultCS22 = prediction
     student1.CC104=CC104
@@ -300,9 +494,14 @@ def resultCS2_2(request):
     student1.CS122=CS122
     student1.CS124=CS124
     student1.CS126=CS126
-    student1.course = 'BSCS'
-    
     student1.save()
+    
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
     
     return render(request, "rCS2_2.html" , {'student1': student1})
 
@@ -316,16 +515,21 @@ def resultCS3_1(request):
     prediction = model5.predict([[CC105,CS131,CS135,CS137]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bscs3_1()
     student1.idNumber = studentID
     student1.resultCS31 = prediction
     student1.CC105=CC105
     student1.CS131=CS131
     student1.CS135=CS135
     student1.CS137=CS137
-    student1.course = 'BSCS'
-    
     student1.save()
+    
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
     
     return render(request, "rCS3_1.html" , {'student1': student1})
 
@@ -339,16 +543,21 @@ def resultCS3_2(request):
     prediction = model6.predict([[CS130,CS132,CS134,CS136]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bscs3_2()
     student1.idNumber = studentID
     student1.resultCS32 = prediction
     student1.CS130=CS130
     student1.CS132=CS132
     student1.CS134=CS134
     student1.CS136=CS136
-    student1.course = 'BSCS'
-    
     student1.save()
+    
+    courseCS = Totalcs()
+    courseCS.totalcs='cs'
+    courseCS.save()
+    
+    courseCS = Course(countcs='1')
+    courseCS.save()
     
     return render(request, "rCS3_2.html" , {'student1': student1})
 
@@ -360,14 +569,19 @@ def resultIT1_1(request):
     prediction = model7.predict([[CC100,CC101]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit1_1()
     student1.idNumber = studentID
     student1.resultIT11 = prediction
     student1.CC100=CC100
     student1.CC101=CC101
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT1_1.html" , {'student1': student1})
 
@@ -381,16 +595,21 @@ def resultIT1_2(request):
     prediction = model8.predict([[CC102,IT112,IT114,MATH103]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit1_2()
     student1.idNumber = studentID
     student1.resultIT12 = prediction
     student1.CC102=CC102
     student1.IT112=IT112
     student1.IT114=IT114
     student1.MATH103=MATH103
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT1_2.html" , {'student1': student1})
 
@@ -404,16 +623,21 @@ def resultIT2_1(request):
     prediction = model9.predict([[CC103,IT121,IT144,MATH104]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit2_1()
     student1.idNumber = studentID
     student1.resultIT21 = prediction
     student1.CC103=CC103
     student1.IT121=IT121
     student1.IT144=IT144
     student1.MATH104=MATH104
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT2_1.html" , {'student1': student1})
 
@@ -427,16 +651,21 @@ def resultIT2_2(request):
     prediction = model10.predict([[CC104,IT122,IT124,IT126]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit2_2()
     student1.idNumber = studentID
     student1.resultIT22 = prediction
     student1.CC104=CC104
     student1.IT122=IT122
     student1.IT124=IT124
     student1.IT126=IT126
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT2_2.html" , {'student1': student1})
 
@@ -451,7 +680,7 @@ def resultIT3_1(request):
     prediction = model11.predict([[CC105,IT131,IT133,IT135,IT137]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit3_1()
     student1.idNumber = studentID
     student1.resultIT31 = prediction
     student1.CC105=CC105
@@ -459,9 +688,14 @@ def resultIT3_1(request):
     student1.IT133=IT133
     student1.IT135=IT135
     student1.IT137=IT137
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT3_1.html" , {'student1': student1})
 
@@ -474,14 +708,19 @@ def resultIT3_2(request):
     prediction = model12.predict([[IT132,IT134,IT136]])
     studentID = request.POST['studentID']
     
-    student1 = Student()
+    student1 = Bsit3_2()
     student1.idNumber = studentID
     student1.resultIT32 = prediction
     student1.IT132=IT132
     student1.IT134=IT134
     student1.IT136=IT136
-    student1.course = 'BSIT'
-    
     student1.save()
+    
+    courseCS = Totalit()
+    courseCS.totalcs='it'
+    courseCS.save()
+    
+    courseCS = Course(countit='1')
+    courseCS.save()
     
     return render(request, "rIT3_2.html" , {'student1': student1})
